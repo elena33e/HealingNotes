@@ -1,20 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { MaterialIcons } from '@expo/vector-icons';
+import CategoriesScreen from './screens/CategoriesScreen';
+import FavoriteCategoriesScreen from './screens/FavoriteCategories';
+import ProfileScreen from './screens/ProfileScreen';
+import AddCategoryScreen from './screens/AddCategoryScreen';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import { StatusBar } from 'react-native';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function CategoriesStack() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Categories" component={CategoriesScreen} />
+      <Stack.Screen name="AddCategory" component={AddCategoryScreen} />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Categories"
+          component={CategoriesStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="category" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Favorites"
+          component={FavoriteCategoriesScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="favorite" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={LoginScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="person" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
