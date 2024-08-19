@@ -3,6 +3,7 @@
     "name": "HealingNotes",
     "slug": "HealingNotes",
     "version": "1.0.0",
+    "entryPoint": "./App.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

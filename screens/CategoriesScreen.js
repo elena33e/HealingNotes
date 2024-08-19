@@ -1,11 +1,12 @@
 // screens/HomeScreen.js
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button } from 'react-native';
+import { ScrollView, View, Text, FlatList, ActivityIndicator, StyleSheet, Button } from 'react-native';
 //import firestore from '@react-native-firebase/firestore';
 import CategoryCard from '../components/CategoryCard';
 import {db} from '../firebaseConfig';
 import { collection, getDocs } from "firebase/firestore";
-
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const CategoriesScreen = ({navigation}) => {
     const [loading, setLoading] = useState(true); 
@@ -53,30 +54,60 @@ const CategoriesScreen = ({navigation}) => {
   }*/
 
     return (
-        <View style={styles.container}>
-            <Text>Categories</Text>
-            <Button
-            style= {styles.button}
-              title="Add new category"
-              color="#841584"
-              onPress={() =>
-              navigation.navigate('AddCategory')
-               }
-           />
-        </View>
+      <View style={styles.container}>
+            
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Text style={styles.textContent}>My Categories</Text>
+        
+       </ScrollView>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style= {styles.button}
+          onPress={() =>
+          navigation.navigate('AddCategory')
+           }
+         >
+             <Icon name="add" size={24} color="white" />
+        </TouchableOpacity>
+       </View>
+    </View>
     );
 };
 
 const styles = StyleSheet.create({
- container : {
-        padding: 10,
-        borderRadius: 5
+  container : {
+     flex: 1
+         
+  },
+  scrollViewContent: {
+     padding: 20,
+  },
+  textContent: {
+     fontSize: 18,
+     marginBottom: 1000, // Add a large margin to demonstrate scrolling
+   },
+  button: {
+     position: 'absolute',
+     right: 20,
+     bottom: 20,
+     backgroundColor: '#6200EE',
+     width: 56,
+     height: 56,
+     borderRadius: 28,
+     justifyContent: 'center',
+     alignItems: 'center',
+     shadowColor: '#000',
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.8,
+     shadowRadius: 2,
+     elevation: 5, // for Android shadow
  },
- button :{
-  padding: 10,
-  width: 20,
-  borderRadius : 50
+ buttonContainer:{
+     position: 'absolute',
+     bottom: 20,
+     right: 20,
+     //alignSelf: 'flex-end'
  }
-});
+ });
 
 export default CategoriesScreen;

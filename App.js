@@ -7,10 +7,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons';
 import CategoriesScreen from './screens/CategoriesScreen';
 import FavoriteCategoriesScreen from './screens/FavoriteCategories';
-import ProfileScreen from './screens/ProfileScreen';
 import AddCategoryScreen from './screens/AddCategoryScreen';
+import AddNoteScreen from './screens/AddNoteScreen';
+import NotesScreen from './screens/NotesScreen';
 import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
+import AuthScreen from './screens/AuthScreen';
 import { StatusBar } from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -19,8 +20,18 @@ const Stack = createStackNavigator();
 function CategoriesStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Categories" component={CategoriesScreen} />
+      <Stack.Screen name="My categories" component={CategoriesScreen} />
       <Stack.Screen name="AddCategory" component={AddCategoryScreen} />
+    </Stack.Navigator>
+  );
+}
+
+
+function NotesStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="My Notes" component={NotesScreen} />
+      <Stack.Screen name="AddNotes" component={AddNoteScreen} />
     </Stack.Navigator>
   );
 }
@@ -39,6 +50,17 @@ export default function App() {
             ),
           }}
         />
+
+        <Tab.Screen
+          name="Notes"
+          component={NotesStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="library-books" color={color} size={size} />
+            ),
+          }}
+        />
+
         <Tab.Screen
           name="Favorites"
           component={FavoriteCategoriesScreen}
@@ -50,7 +72,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Profile"
-          component={LoginScreen}
+          component={AuthScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons name="person" color={color} size={size} />
