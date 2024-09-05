@@ -11,17 +11,23 @@ import AddCategoryScreen from './screens/AddCategoryScreen';
 import AddNoteScreen from './screens/AddNoteScreen';
 import NotesScreen from './screens/NotesScreen';
 import HomeScreen from './screens/HomeScreen';
-import AuthScreen from './screens/AuthScreen';
 import { StatusBar } from 'react-native';
+import SignUpScreen from './screens/SignUpScreen';
+import LoginScreen from './screens/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import SubcategoriesScreen from './screens/SubcategoriesScreen';
+import NoteDetailsScreen from './screens/NoteDetailsScreen';
+import EditNoteScreen from './screens/EditNoteScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function CategoriesStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="My categories" component={CategoriesScreen} />
       <Stack.Screen name="AddCategory" component={AddCategoryScreen} />
+      <Stack.Screen name="SubcategoriesScreen" component={SubcategoriesScreen} /> 
     </Stack.Navigator>
   );
 }
@@ -29,9 +35,21 @@ function CategoriesStack() {
 
 function NotesStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="My Notes" component={NotesScreen} />
+      <Stack.Screen name="NoteDetailsScreen" component={NoteDetailsScreen} />
+      <Stack.Screen name="EditNoteScreen" component={EditNoteScreen} />
       <Stack.Screen name="AddNotes" component={AddNoteScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }
@@ -72,7 +90,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Profile"
-          component={AuthScreen}
+          component={AuthStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialIcons name="person" color={color} size={size} />
