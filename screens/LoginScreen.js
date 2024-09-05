@@ -1,97 +1,122 @@
-// screens/ProfileScreen.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Button, TextInput } from 'react-native';
-//import { TextInput } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import MyTextInput from '../components/MyTextInput';
+import MyButton from '../components/MyButton';
+import { app } from '../firebaseConfig';
+import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 
+const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const auth = getAuth(app);
 
+  const loginWithEmailAndPassword = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        console.log(res);
+        Alert.alert('Logged in!');
+        navigation.navigate('Profile');
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert(err.nativeErrorMessage);
+      });
+  };
 
-const LoginScreen = ({email, setEmail, password, setPassword,  handleAuthentication}) => {
-  const [isLogin, setIsLogin] = useState(true);
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <View style={styles.inputContainer}>
 
-    return (
-        <View style={{ flex: 1, alignItems: 'center' }}>
-            <Image source={require('./../assets/login.png')}
-              style={styles.image}
-            />
-            <Text style={styles.title}>{isLogin ? 'Sign In' : 'Sign Up'}</Text>
-            
-            <TextInput
-             style={styles.input}
-             value={email}
-             onChangeText={setEmail}
-             placeholder='Email'
-             autoCapitalize='none'
-            />
+        <MyTextInput
+          value={email}
+          onChangeText={text => setEmail(text)}
+          placeholder='Enter e-mail'
+          style={styles.input}
+        />
 
-            <TextInput
-             style={styles.input}
-             value={password}
-             onChangeText={setPassword}
-             placeholder='Password'
-             secureTextEntry
-            />
+        <MyTextInput
+          value={password}
+          onChangeText={text => setPassword(text)}
+          placeholder='Enter password'
+          secureTextEntry
+          style={styles.input}
+        />
 
-        <View style={styles.buttonContainer}>
-          <Button title={isLogin ? 'Sign In' : 'Sign Up'} onPress={handleAuthentication} color="#3498db" />
-        </View>
-
-        <View style={styles.bottomContainer}>
-          <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
-          </Text>
+        <MyButton title='Login' onPress={loginWithEmailAndPassword} style={styles.button} />
+        
+        <View style={styles.signupContainer}>
+          <Text style={styles.textDontHave}>Don’t have an account yet? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.signUpText}>Sign Up!</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    );
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
-    //flexGrow: 1,
+    flex: 1,
+    backgroundColor: '#FFFFFF',  // Set the background to white
+    padding: 20,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#f0f0f0',
   },
-  authContainer: {
-    width: '80%',
-    maxWidth: 400,
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 3,
+  inputContainer: {
+    width: '100%',
+    height: '80%',
+    backgroundColor: '#FFFFFF',
+    padding: 30,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 3, // Add shadow for Android
+    shadowColor: '#000', // Add shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 16,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#474F7A',  // Match the color scheme
     textAlign: 'center',
+    marginBottom: 30,
   },
-  input : {
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    paddingHorizontal: 17,
-    fontSize: 15,
-    marginTop: 5
-  },
-  buttonContainer: {
-    marginBottom: 16,
-  },
-  toggleText: {
-    color: '#3498db',
-    textAlign: 'center',
-  },
-  bottomContainer: {
-    marginTop: 20,
-  },
-  emailText: {
-    fontSize: 18,
-    textAlign: 'center',
+  input: {
+    width: '100%',
+    height: 50,
+    borderColor: '#D6BBFC',
+    backgroundColor: '#E8DFFC',
+    borderRadius: 25,
+    padding: 15,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: '#6A30DA',
     marginBottom: 20,
   },
-  image: {
-    width: 150,
-    height: 150
-  }
+  signupContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginRight: 10,
+    marginBottom: 15,
+  },
+  textDontHave: {
+    color: '#6A30DA',  // Match the color scheme
+  },
+  signUpText: {
+    color: '#8A65DF',  // Make the Sign Up text stand out
+    fontWeight: 'bold',
+  },
+  button: {
+    width: '80%',
+    padding: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "#8A65DF",
+    borderRadius: 25,
+  },
 });
 
 export default LoginScreen;
